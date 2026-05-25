@@ -1,0 +1,962 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #ffffff;
+    color: #2b2b2b;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Cabeçalho */
+
+.topo {
+    width: 100%;
+    height: 64px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dedede;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    min-width: 150px;
+}
+
+.logo a {
+    color: #242424;
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.area-pesquisa {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.form-pesquisa {
+    width: 460px;
+    max-width: 90%;
+    display: flex;
+    align-items: center;
+    border: 2px solid #2b2b2b;
+    border-radius: 999px;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.form-pesquisa input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 9px 14px;
+    font-size: 15px;
+}
+
+.form-pesquisa button {
+    border: none;
+    background-color: transparent;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.menu {
+    min-width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.botao-menu {
+    border: none;
+    border-radius: 999px;
+    padding: 9px 15px;
+    background-color: transparent;
+    color: #2b2b2b;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.botao-menu:hover {
+    background-color: #eeeeee;
+}
+
+.botao-destaque {
+    background-color: #2b2b2b;
+    color: #ffffff;
+}
+
+.botao-destaque:hover {
+    background-color: #444444;
+}
+
+/* Dropdown do usuário */
+
+.dropdown-usuario {
+    position: relative;
+}
+
+.dropdown-usuario summary {
+    list-style: none;
+    cursor: pointer;
+}
+
+.dropdown-usuario summary::-webkit-details-marker {
+    display: none;
+}
+
+.icone-perfil {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    background-color: #eeeeee;
+    transition: 0.2s;
+}
+
+.icone-perfil:hover {
+    background-color: #dddddd;
+}
+
+.menu-dropdown {
+    position: absolute;
+    top: 52px;
+    right: 0;
+    width: 210px;
+    background-color: #ffffff;
+    border: 1px solid #dedede;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+    padding: 10px;
+    z-index: 20;
+}
+
+.nome-dropdown {
+    font-weight: bold;
+    color: #2b2b2b;
+    padding: 8px 10px 10px;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 6px;
+}
+
+.menu-dropdown a {
+    display: block;
+    padding: 10px;
+    border-radius: 10px;
+    color: #2b2b2b;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.menu-dropdown a:hover {
+    background-color: #f1f1f1;
+}
+
+.menu-dropdown .sair-dropdown {
+    color: #c0392b;
+}
+
+.menu-dropdown .sair-dropdown:hover {
+    background-color: #fdecea;
+}
+
+/* Página inicial / catálogo */
+
+.container {
+    width: 88%;
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 20px 0 50px;
+}
+
+.titulo-pagina {
+    text-align: center;
+    font-size: 36px;
+    font-weight: normal;
+    margin-bottom: 34px;
+}
+
+.subtitulo {
+    font-size: 26px;
+    margin-bottom: 14px;
+}
+
+.grade-jogos {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 30px 40px;
+}
+
+.card-jogo a {
+    display: block;
+}
+
+.capa-jogo {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    background-color: #d8d8d8;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2b2b2b;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.card-jogo:hover .capa-jogo {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.capa-jogo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.nome-jogo {
+    margin-top: 6px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.info-jogo-card {
+    font-size: 13px;
+    color: #555;
+    margin-top: 2px;
+}
+
+.mensagem-vazia {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.mensagem-busca {
+    background-color: #f4f4f4;
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-align: center;
+    margin: -12px auto 28px;
+    max-width: 520px;
+}
+
+.mensagem-busca a {
+    color: #283593;
+    font-weight: bold;
+}
+
+.mensagem-busca a:hover {
+    text-decoration: underline;
+}
+
+/* Responsivo simples */
+
+@media (max-width: 1000px) {
+    .grade-jogos {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 760px) {
+    .topo {
+        height: auto;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .logo {
+        min-width: auto;
+    }
+
+    .logo a {
+        font-size: 30px;
+    }
+
+    .area-pesquisa {
+        order: 3;
+        width: 100%;
+    }
+
+    .form-pesquisa {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .menu {
+        min-width: auto;
+    }
+
+    .container {
+        width: 92%;
+    }
+
+    .grade-jogos {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+
+    .titulo-pagina {
+        font-size: 30px;
+    }
+}
+
+/* Formulários de login/cadastro */
+
+.pagina-formulario {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.caixa-formulario {
+    width: 100%;
+    max-width: 430px;
+    background-color: #f4f4f4;
+    border-radius: 18px;
+    padding: 32px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.caixa-formulario h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 26px;
+}
+
+.grupo-form {
+    margin-bottom: 18px;
+}
+
+.grupo-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.grupo-form input {
+    width: 100%;
+    border: 2px solid #2b2b2b;
+    border-radius: 14px;
+    padding: 11px 13px;
+    font-size: 15px;
+    background-color: #ffffff;
+    outline: none;
+}
+
+.grupo-form input:focus {
+    border-color: #555555;
+    box-shadow: 0 0 0 3px rgba(43, 43, 43, 0.12);
+}
+
+.botao-principal {
+    width: 100%;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 16px;
+    background-color: #2b2b2b;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.botao-principal:hover {
+    background-color: #444444;
+}
+
+.texto-formulario {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 15px;
+}
+
+.texto-formulario a {
+    color: #283593;
+    font-weight: bold;
+}
+
+.texto-formulario a:hover {
+    text-decoration: underline;
+}
+
+.mensagem-formulario {
+    text-align: center;
+    margin-bottom: 18px;
+    color: #c0392b;
+    font-weight: bold;
+}
+
+/* Perfil do usuário */
+
+.caixa-perfil {
+    width: 100%;
+    max-width: 560px;
+    background-color: #f4f4f4;
+    border-radius: 18px;
+    padding: 32px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.caixa-perfil h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 26px;
+}
+
+.secao-senha {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid #d7d7d7;
+}
+
+.secao-senha h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.texto-ajuda {
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 18px;
+}
+
+.area-excluir-conta {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid #d7d7d7;
+    text-align: center;
+}
+
+.area-excluir-conta h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.texto-perigo {
+    color: #c0392b;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.botao-perigo {
+    display: inline-block;
+    border: 2px solid #c0392b;
+    border-radius: 999px;
+    padding: 10px 18px;
+    color: #c0392b;
+    background-color: #ffffff;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.botao-perigo:hover {
+    background-color: #c0392b;
+    color: #ffffff;
+}
+
+/* Página de exclusão de conta */
+
+.caixa-confirmacao {
+    width: 100%;
+    max-width: 500px;
+    background-color: #f4f4f4;
+    border-radius: 18px;
+    padding: 32px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    text-align: center;
+}
+
+.caixa-confirmacao h1 {
+    font-size: 28px;
+    margin-bottom: 18px;
+}
+
+.aviso-perigo {
+    background-color: #fdecea;
+    color: #a93226;
+    border: 1px solid #f5b7b1;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 22px;
+    line-height: 1.4;
+}
+
+.checkbox-confirmacao {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    text-align: left;
+    margin: 18px 0;
+    font-size: 14px;
+    color: #444444;
+}
+
+.checkbox-confirmacao input {
+    margin-top: 3px;
+}
+
+.botoes-confirmacao {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.botoes-confirmacao a,
+.botoes-confirmacao button {
+    flex: 1;
+}
+
+.botao-secundario {
+    display: inline-block;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 16px;
+    background-color: #dddddd;
+    color: #2b2b2b;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.2s;
+}
+
+.botao-secundario:hover {
+    background-color: #cfcfcf;
+}
+
+/* Página individual do jogo */
+
+.pagina-jogo {
+    width: 88%;
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 36px 0 60px;
+}
+
+.layout-jogo {
+    display: grid;
+    grid-template-columns: 260px 1fr 300px;
+    gap: 32px;
+    align-items: start;
+}
+
+.capa-detalhe {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    background-color: #d8d8d8;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+}
+
+.capa-detalhe img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.info-detalhe {
+    padding-top: 6px;
+}
+
+.info-detalhe h1 {
+    font-size: 36px;
+    margin-bottom: 18px;
+}
+
+.info-detalhe p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.descricao-jogo {
+    margin-top: 22px;
+}
+
+.descricao-jogo h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.caixa-notas {
+    background-color: #f4f4f4;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10);
+}
+
+.caixa-notas h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 22px;
+}
+
+.item-nota {
+    margin-bottom: 22px;
+    text-align: center;
+}
+
+.item-nota span {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.valor-nota {
+    font-size: 34px;
+    font-weight: bold;
+}
+
+.texto-sem-nota {
+    font-size: 15px;
+    color: #666666;
+}
+
+.secao-avaliacoes {
+    margin-top: 44px;
+}
+
+.secao-avaliacoes h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+.card-avaliacao {
+    background-color: #f4f4f4;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.topo-avaliacao {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.usuario-avaliacao {
+    font-weight: bold;
+}
+
+.data-avaliacao {
+    color: #666666;
+    font-size: 14px;
+}
+
+.card-avaliacao p {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+@media (max-width: 950px) {
+    .layout-jogo {
+        grid-template-columns: 220px 1fr;
+    }
+
+    .caixa-notas {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 700px) {
+    .pagina-jogo {
+        width: 92%;
+    }
+
+    .layout-jogo {
+        grid-template-columns: 1fr;
+    }
+
+    .capa-detalhe {
+        max-width: 260px;
+        margin: 0 auto;
+    }
+
+    .info-detalhe h1 {
+        text-align: center;
+        font-size: 30px;
+    }
+
+    .topo-avaliacao {
+        flex-direction: column;
+    }
+}
+
+.item-nota small {
+    color: #666666;
+    font-size: 14px;
+}
+
+/* Admin - listagem de jogos */
+
+.area-admin {
+    width: 88%;
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 36px 0 60px;
+}
+
+.topo-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 26px;
+}
+
+.topo-admin h1 {
+    font-size: 32px;
+}
+
+.botao-admin {
+    display: inline-block;
+    border: none;
+    border-radius: 999px;
+    padding: 11px 18px;
+    background-color: #2b2b2b;
+    color: #ffffff;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.botao-admin:hover {
+    background-color: #444444;
+}
+
+.tabela-admin {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+}
+
+.tabela-admin th,
+.tabela-admin td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #eeeeee;
+    text-align: left;
+}
+
+.tabela-admin th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.tabela-admin tr:hover {
+    background-color: #fafafa;
+}
+
+.acoes-admin {
+    display: flex;
+    gap: 10px;
+}
+
+.link-admin {
+    color: #283593;
+    font-weight: bold;
+}
+
+.link-admin:hover {
+    text-decoration: underline;
+}
+
+.mensagem-admin {
+    background-color: #f4f4f4;
+    padding: 18px;
+    border-radius: 14px;
+    text-align: center;
+}
+
+@media (max-width: 760px) {
+    .topo-admin {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .tabela-admin {
+        font-size: 14px;
+    }
+
+    .tabela-admin th,
+    .tabela-admin td {
+        padding: 10px;
+    }
+
+    .acoes-admin {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+
+/* Admin - cadastrar/editar jogo */
+
+.layout-form-jogo {
+    width: 88%;
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 36px 0 60px;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 48px;
+    align-items: start;
+}
+
+.preview-capa {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    background-color: #d8d8d8;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555555;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+}
+
+.preview-capa img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.form-jogo {
+    background-color: #f4f4f4;
+    border-radius: 18px;
+    padding: 30px 34px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.form-jogo h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 26px;
+}
+
+.form-jogo textarea {
+    width: 100%;
+    min-height: 160px;
+    resize: vertical;
+    display: block;
+}
+
+.form-jogo input,
+.form-jogo textarea {
+    width: 100%;
+}
+
+.linha-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.acoes-form-jogo {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.acoes-form-jogo .botao-principal,
+.acoes-form-jogo .botao-secundario {
+    flex: 1;
+}
+
+@media (max-width: 800px) {
+    .layout-form-jogo {
+        grid-template-columns: 1fr;
+        width: 92%;
+        gap: 28px;
+    }
+
+    .preview-capa {
+        max-width: 280px;
+        margin: 0 auto;
+    }
+
+    .linha-form {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .acoes-form-jogo {
+        flex-direction: column;
+    }
+}
+
+.area-excluir-jogo {
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid #d0d0d0;
+    text-align: center;
+}
+
+.area-excluir-jogo h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.area-excluir-jogo p {
+    color: #c0392b;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.preview-exclusao-jogo {
+    margin-bottom: 20px;
+}
+
+.preview-exclusao-jogo img {
+    width: 120px;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+    margin: 0 auto 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+
+.preview-exclusao-jogo h2 {
+    font-size: 22px;
+    text-align: center;
+}
