@@ -11,6 +11,16 @@ if (!isset($_GET["id"]) || empty($_GET["id"])) {
 
 $id_jogo = intval($_GET["id"]);
 
+$origem = $_POST["origem"] ?? $_GET["origem"] ?? "gerenciar";
+
+if (!in_array($origem, ["gerenciar", "jogo"], true)) {
+    $origem = "gerenciar";
+}
+
+$url_voltar = $origem === "jogo"
+    ? "../jogo.php?id=" . $id_jogo
+    : "jogos.php";
+
 $sql_busca = "SELECT * FROM jogos WHERE id_jogo = ?";
 $stmt_busca = $conn->prepare($sql_busca);
 $stmt_busca->bind_param("i", $id_jogo);
@@ -64,10 +74,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         );
 
         if ($stmt->execute()) {
-            header("Location: jogos.php");
+            if ($origem === "jogo") {
+                header("Location: ../jogo.php?id=" . $id_jogo);
+            } else {
+                header("Location: jogos.php");
+            }
+
             exit;
-        } else {
-            $mensagem = "Erro ao atualizar jogo: " . $stmt->error;
         }
     }
 }
@@ -78,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Editar Jogo - Avalia</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo filemtime(__DIR__ . '/../assets/css/style.css'); ?>">
 </head>
 <body>
 
@@ -88,14 +101,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
 
     <div class="area-pesquisa">
-        <form class="form-pesquisa" method="GET" action="jogos.php">
-            <input 
-                type="text" 
-                name="busca" 
-                placeholder="Pesquisar na tabela"
-            >
-            <button type="submit">🔍</button>
-        </form>
+        <?php
+        $caminho_base = "../";
+        require "../includes/barra_pesquisa.php";
+        ?>
     </div>
 
     <nav class="menu">
@@ -109,9 +118,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <?php echo htmlspecialchars($_SESSION["nome"]); ?>
                 </p>
 
-                <a href="../perfil.php">Editar perfil</a>
-                <a href="jogos.php">Gerenciar jogos</a>
-                <a href="../logout.php" class="sair-dropdown">Sair</a>
+                <a href="../usuario.php?id=<?php echo $_SESSION["id_usuario"]; ?>">
+                    Acessar perfil
+                </a>
+
+                <a href="../logout.php" class="sair-dropdown">
+                    Sair
+                </a>
             </div>
         </details>
     </nav>
@@ -139,6 +152,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php endif; ?>
 
         <form method="POST" action="jogo_editar.php?id=<?php echo $id_jogo; ?>">
+            <input 
+                type="hidden" 
+                name="origem" 
+                value="<?php echo htmlspecialchars($origem); ?>"
+            >
             <div class="grupo-form">
                 <label>Título</label>
                 <input 
@@ -207,7 +225,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
 
             <div class="acoes-form-jogo">
-                <a class="botao-secundario" href="jogos.php">Cancelar</a>
+                <a 
+                    class="botao-secundario" 
+                    href="<?php echo htmlspecialchars($url_voltar); ?>"
+                >
+                    Cancelar
+                </a>
 
                 <button class="botao-principal" type="submit">
                     Salvar Alterações

@@ -2,14 +2,16 @@
 
 Sistema web desenvolvido em PHP e MySQL para avaliação de jogos.
 
-## Funcionalidades da Entrega 3
+## Funcionalidades
 
 - Cadastro de usuários
-- Login e logout
-- Perfil do usuário com edição de dados
+- Login e logout de usuários
+- Perfil do usuário com avaliações e edição de dados
 - Exclusão de conta com confirmação
+- Exclusão e edição de avaliações
+- Moderação de avaliações pelo administrador
 - Catálogo de jogos
-- Busca de jogos
+- Busca de jogos por nome e filtros
 - Página individual do jogo com avaliações
 - CRUD de jogos para administrador
 - Cálculo de média geral, média de performance e percentual de relatos de bugs

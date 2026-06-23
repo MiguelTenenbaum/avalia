@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Meu Perfil - Avalia</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=<?php echo filemtime(__DIR__ . '/assets/css/style.css'); ?>">
 </head>
 <body>
 
@@ -121,30 +121,54 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <a href="index.php">Avalia</a>
     </div>
 
-    <div class="area-pesquisa"></div>
+    <div class="area-pesquisa">
+        <?php
+        $caminho_base = "";
+        require "includes/barra_pesquisa.php";
+        ?>
+    </div>
 
     <nav class="menu">
-        <a class="botao-menu" href="index.php">Catálogo</a>
+        <?php if (isset($_SESSION["id_usuario"])): ?>
 
-        <details class="dropdown-usuario">
-            <summary class="icone-perfil" title="Menu do usuário">
-                👤
-            </summary>
+            <?php if ($_SESSION["tipo"] === "admin"): ?>
+                <a
+                    class="botao-menu botao-admin-header"
+                    href="admin/jogos.php"
+                >
+                    Gerenciar jogos
+                </a>
+            <?php endif; ?>
 
-            <div class="menu-dropdown">
-                <p class="nome-dropdown">
-                    <?php echo htmlspecialchars($_SESSION["nome"]); ?>
-                </p>
+            <details class="dropdown-usuario">
+                <summary class="icone-perfil" title="Menu do usuário">
+                    👤
+                </summary>
 
-                <a href="perfil.php">Editar perfil</a>
+                <div class="menu-dropdown">
+                    <p class="nome-dropdown">
+                        <?php echo htmlspecialchars($_SESSION["nome"]); ?>
+                    </p>
 
-                <?php if ($_SESSION["tipo"] === "admin"): ?>
-                    <a href="admin/jogos.php">Gerenciar jogos</a>
-                <?php endif; ?>
+                    <a href="usuario.php?id=<?php echo $_SESSION["id_usuario"]; ?>">
+                        Acessar perfil
+                    </a>
 
-                <a href="logout.php" class="sair-dropdown">Sair</a>
-            </div>
-        </details>
+                    <a href="logout.php" class="sair-dropdown">
+                        Sair
+                    </a>
+                </div>
+            </details>
+
+        <?php else: ?>
+
+            <a class="botao-menu" href="login.php">Entrar</a>
+
+            <a class="botao-menu botao-destaque" href="cadastro.php">
+                Criar conta
+            </a>
+
+        <?php endif; ?>
     </nav>
 </header>
 

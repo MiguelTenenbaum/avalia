@@ -39,18 +39,53 @@ $stmt_medias->bind_param("i", $id_jogo);
 $stmt_medias->execute();
 $medias = $stmt_medias->get_result()->fetch_assoc();
 
+$usuario_admin =
+    isset($_SESSION["id_usuario"]) &&
+    ($_SESSION["tipo"] ?? "") === "admin";
+
+$filtro_visibilidade_avaliacoes = $usuario_admin
+    ? ""
+    : "AND avaliacoes.visivel = 1";
+
 $sql_avaliacoes = "SELECT 
                         avaliacoes.*,
                         usuarios.nome
                    FROM avaliacoes
                    INNER JOIN usuarios ON avaliacoes.id_usuario = usuarios.id_usuario
-                   WHERE avaliacoes.id_jogo = ? AND avaliacoes.visivel = 1
+                   WHERE avaliacoes.id_jogo = ?
+                   $filtro_visibilidade_avaliacoes
                    ORDER BY avaliacoes.data_avaliacao DESC";
 
 $stmt_avaliacoes = $conn->prepare($sql_avaliacoes);
 $stmt_avaliacoes->bind_param("i", $id_jogo);
 $stmt_avaliacoes->execute();
 $resultado_avaliacoes = $stmt_avaliacoes->get_result();
+
+if (isset($_SESSION["id_usuario"])) {
+    $id_usuario_logado = $_SESSION["id_usuario"];
+
+    $sql_usuario_avaliou = "SELECT id_avaliacao
+                            FROM avaliacoes
+                            WHERE id_usuario = ?
+                              AND id_jogo = ?
+                            LIMIT 1";
+
+    $stmt_usuario_avaliou = $conn->prepare($sql_usuario_avaliou);
+
+    $stmt_usuario_avaliou->bind_param(
+        "ii",
+        $id_usuario_logado,
+        $id_jogo
+    );
+
+    $stmt_usuario_avaliou->execute();
+
+    $resultado_usuario_avaliou =
+        $stmt_usuario_avaliou->get_result();
+
+    $usuario_ja_avaliou =
+        $resultado_usuario_avaliou->num_rows > 0;
+}
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +93,7 @@ $resultado_avaliacoes = $stmt_avaliacoes->get_result();
 <head>
     <meta charset="UTF-8">
     <title><?php echo htmlspecialchars($jogo["titulo"]); ?> - Avalia</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=<?php echo filemtime(__DIR__ . '/assets/css/style.css'); ?>">
 </head>
 <body>
 
@@ -68,18 +103,23 @@ $resultado_avaliacoes = $stmt_avaliacoes->get_result();
     </div>
 
     <div class="area-pesquisa">
-        <form class="form-pesquisa" method="GET" action="index.php">
-            <input 
-                type="text" 
-                name="busca" 
-                placeholder="Pesquisar por jogo"
-            >
-            <button type="submit">🔍</button>
-        </form>
+        <?php
+        $caminho_base = "";
+        require "includes/barra_pesquisa.php";
+        ?>
     </div>
 
     <nav class="menu">
         <?php if (isset($_SESSION["id_usuario"])): ?>
+
+            <?php if ($_SESSION["tipo"] === "admin"): ?>
+                <a
+                    class="botao-menu botao-admin-header"
+                    href="admin/jogo_editar.php?id=<?php echo $jogo["id_jogo"]; ?>&origem=jogo"
+                >
+                    Editar jogo
+                </a>
+            <?php endif; ?>
 
             <details class="dropdown-usuario">
                 <summary class="icone-perfil" title="Menu do usuário">
@@ -91,21 +131,23 @@ $resultado_avaliacoes = $stmt_avaliacoes->get_result();
                         <?php echo htmlspecialchars($_SESSION["nome"]); ?>
                     </p>
 
-                    <a href="perfil.php">Editar perfil</a>
+                    <a href="usuario.php?id=<?php echo $_SESSION["id_usuario"]; ?>">
+                        Acessar perfil
+                    </a>
 
-                    <?php if ($_SESSION["tipo"] === "admin"): ?>
-                        <a href="admin/jogos.php">Gerenciar jogos</a>
-                        <a href="admin/jogo_editar.php?id=<?php echo $jogo["id_jogo"]; ?>">Editar este jogo</a>
-                    <?php endif; ?>
-
-                    <a href="logout.php" class="sair-dropdown">Sair</a>
+                    <a href="logout.php" class="sair-dropdown">
+                        Sair
+                    </a>
                 </div>
             </details>
 
         <?php else: ?>
 
             <a class="botao-menu" href="login.php">Entrar</a>
-            <a class="botao-menu botao-destaque" href="cadastro.php">Criar conta</a>
+
+            <a class="botao-menu botao-destaque" href="cadastro.php">
+                Criar conta
+            </a>
 
         <?php endif; ?>
     </nav>
@@ -149,7 +191,7 @@ $resultado_avaliacoes = $stmt_avaliacoes->get_result();
                 <?php echo htmlspecialchars($jogo["distribuidora"]); ?>
             </p>
 
-            <div class="descricao-jogo">
+            <div class="descricao-jogo">    
                 <h2>Descrição</h2>
                 <p>
                     <?php echo nl2br(htmlspecialchars($jogo["descricao"])); ?>
@@ -202,8 +244,47 @@ $resultado_avaliacoes = $stmt_avaliacoes->get_result();
                     <p class="texto-sem-nota">Sem avaliações</p>
                 <?php endif; ?>
             </div>
+            <div class="acao-caixa-avaliacoes">
+                <?php if (isset($_SESSION["id_usuario"])): ?>
+
+                    <?php if ($usuario_ja_avaliou): ?>
+
+                        <div class="aviso-ja-avaliou">
+                            <strong>Avaliação publicada</strong>
+
+                            <span>
+                                Você já avaliou este jogo.
+                            </span>
+                        </div>
+
+                    <?php else: ?>
+
+                        <a
+                            class="botao-principal"
+                            href="avaliar.php?id_jogo=<?php echo $jogo["id_jogo"]; ?>"
+                        >
+                            Avaliar jogo
+                        </a>
+
+                    <?php endif; ?>
+
+                <?php else: ?>
+
+                    <p class="texto-login-avaliacao">
+                        Entre em sua conta para avaliar este jogo.
+                    </p>
+
+                    <a
+                        class="botao-principal"
+                        href="login.php"
+                    >
+                        Entrar para avaliar
+                    </a>
+
+                <?php endif; ?>
+            </div>
         </aside>
-    </section>
+    </section>  
 
     <section class="secao-avaliacoes">
         <h2>Avaliações dos usuários</h2>
@@ -211,16 +292,88 @@ $resultado_avaliacoes = $stmt_avaliacoes->get_result();
         <?php if ($resultado_avaliacoes->num_rows > 0): ?>
 
             <?php while ($avaliacao = $resultado_avaliacoes->fetch_assoc()): ?>
-                <article class="card-avaliacao">
+                <article
+                    class="card-avaliacao <?php echo intval($avaliacao["visivel"]) === 0 ? "avaliacao-oculta" : ""; ?>"
+                    id="avaliacao-<?php echo $avaliacao["id_avaliacao"]; ?>"
+                >
                     <div class="topo-avaliacao">
-                        <span class="usuario-avaliacao">
+                        <div class="identificacao-avaliacao">
+                        <a
+                            class="usuario-avaliacao link-usuario-avaliacao"
+                            href="usuario.php?id=<?php echo $avaliacao["id_usuario"]; ?>"
+                        >
                             <?php echo htmlspecialchars($avaliacao["nome"]); ?>
-                        </span>
+                        </a>
+
+                        <?php if ($usuario_admin && intval($avaliacao["visivel"]) === 0): ?>
+                            <span class="selo-avaliacao-oculta">
+                                Oculta
+                            </span>
+                        <?php endif; ?>
+                    </div>
 
                         <span class="data-avaliacao">
                             <?php echo date("d/m/Y H:i", strtotime($avaliacao["data_avaliacao"])); ?>
                         </span>
                     </div>
+
+                    <?php
+                    $pode_editar_propria =
+                        isset($_SESSION["id_usuario"]) &&
+                        intval($_SESSION["id_usuario"]) === intval($avaliacao["id_usuario"]);
+
+                    $pode_moderar = $usuario_admin;
+                    ?>
+
+                    <?php if ($pode_editar_propria || $pode_moderar): ?>
+                        <div class="acoes-card-avaliacao">
+
+                            <?php if ($pode_editar_propria): ?>
+                                <a
+                                    class="link-acao-avaliacao"
+                                    href="avaliacao_editar.php?id=<?php echo $avaliacao["id_avaliacao"]; ?>"
+                                >
+                                    Editar
+                                </a>
+                            <?php endif; ?>
+
+                            <?php if ($pode_editar_propria && !$pode_moderar): ?>
+                                <a
+                                    class="link-acao-avaliacao link-excluir-avaliacao"
+                                    href="avaliacao_excluir.php?id=<?php echo $avaliacao["id_avaliacao"]; ?>"
+                                >
+                                    Excluir
+                                </a>
+                            <?php endif; ?>
+
+                            <?php if ($pode_moderar): ?>
+
+                                <?php if (intval($avaliacao["visivel"]) === 1): ?>
+                                    <a
+                                        class="link-acao-avaliacao link-moderar-avaliacao"
+                                        href="admin/avaliacao_visibilidade.php?id=<?php echo $avaliacao["id_avaliacao"]; ?>&acao=ocultar"
+                                    >
+                                        Ocultar
+                                    </a>
+                                <?php else: ?>
+                                    <a
+                                        class="link-acao-avaliacao link-moderar-avaliacao"
+                                        href="admin/avaliacao_visibilidade.php?id=<?php echo $avaliacao["id_avaliacao"]; ?>&acao=restaurar"
+                                    >
+                                        Restaurar
+                                    </a>
+                                <?php endif; ?>
+
+                                <a
+                                    class="link-acao-avaliacao link-excluir-avaliacao"
+                                    href="admin/avaliacao_excluir.php?id=<?php echo $avaliacao["id_avaliacao"]; ?>"
+                                >
+                                    Excluir
+                                </a>
+
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
 
                     <p>
                         <strong>Nota geral:</strong>
@@ -245,6 +398,20 @@ $resultado_avaliacoes = $stmt_avaliacoes->get_result();
                             <strong>Plataforma:</strong>
                             <?php echo htmlspecialchars($avaliacao["plataforma"]); ?>
                         </p>
+                    <?php endif; ?>
+
+                    <?php if (!empty($avaliacao["especificacoes"])): ?>
+                        <details class="especificacoes-avaliacao">
+                            <summary>
+                                Ver especificações do sistema
+                            </summary>
+
+                            <p>
+                                <?php echo nl2br(
+                                    htmlspecialchars($avaliacao["especificacoes"])
+                                ); ?>
+                            </p>
+                        </details>
                     <?php endif; ?>
 
                     <?php if ($avaliacao["possui_bug"] === "sim"): ?>

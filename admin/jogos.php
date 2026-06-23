@@ -33,7 +33,7 @@ if (!empty($busca)) {
 <head>
     <meta charset="UTF-8">
     <title>Gerenciar Jogos - Avalia</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo filemtime(__DIR__ . '/../assets/css/style.css'); ?>">
 </head>
 <body>
 
@@ -65,9 +65,13 @@ if (!empty($busca)) {
                     <?php echo htmlspecialchars($_SESSION["nome"]); ?>
                 </p>
 
-                <a href="../perfil.php">Editar perfil</a>
-                <a href="jogos.php">Gerenciar jogos</a>
-                <a href="../logout.php" class="sair-dropdown">Sair</a>
+                <a href="../usuario.php?id=<?php echo $_SESSION["id_usuario"]; ?>">
+                    Acessar perfil
+                </a>
+
+                <a href="../logout.php" class="sair-dropdown">
+                    Sair
+                </a>
             </div>
         </details>
     </nav>
@@ -142,7 +146,7 @@ if (!empty($busca)) {
 
                                 <a 
                                     class="link-admin" 
-                                    href="jogo_editar.php?id=<?php echo $jogo["id_jogo"]; ?>"
+                                    href="jogo_editar.php?id=<?php echo $jogo["id_jogo"]; ?>&origem=gerenciar"
                                 >
                                     Editar
                                 </a>

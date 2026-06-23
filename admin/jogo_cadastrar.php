@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Cadastrar Jogo - Avalia</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo filemtime(__DIR__ . '/../assets/css/style.css'); ?>">
 </head>
 <body>
 
@@ -61,17 +61,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
 
     <div class="area-pesquisa">
-        <form class="form-pesquisa" method="GET" action="jogos.php">
-            <input 
-                type="text" 
-                name="busca" 
-                placeholder="Pesquisar na tabela"
-            >
-            <button type="submit">🔍</button>
-        </form>
+        <?php
+        $caminho_base = "../";
+        require "../includes/barra_pesquisa.php";
+        ?>
     </div>
 
     <nav class="menu">
+        <a class="botao-menu botao-admin-header" href="jogos.php">Gerenciar jogos</a>
+
         <details class="dropdown-usuario">
             <summary class="icone-perfil" title="Menu do usuário">
                 👤
@@ -82,9 +80,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <?php echo htmlspecialchars($_SESSION["nome"]); ?>
                 </p>
 
-                <a href="../perfil.php">Editar perfil</a>
-                <a href="jogos.php">Gerenciar jogos</a>
-                <a href="../logout.php" class="sair-dropdown">Sair</a>
+                <a href="../usuario.php?id=<?php echo $_SESSION["id_usuario"]; ?>">
+                    Acessar perfil
+                </a>
+
+                <a href="../logout.php" class="sair-dropdown">
+                    Sair
+                </a>
             </div>
         </details>
     </nav>

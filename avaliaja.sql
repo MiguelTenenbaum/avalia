@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2026 at 10:46 PM
+-- Generation Time: Jun 23, 2026 at 08:38 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,19 +37,12 @@ CREATE TABLE `avaliacoes` (
   `comentario_geral` text DEFAULT NULL,
   `nota_performance` tinyint(4) DEFAULT NULL,
   `plataforma` varchar(100) DEFAULT NULL,
+  `especificacoes` text DEFAULT NULL,
   `possui_bug` enum('sim','nao') DEFAULT 'nao',
   `descricao_bug` text DEFAULT NULL,
   `visivel` tinyint(1) NOT NULL DEFAULT 1,
   `data_avaliacao` datetime NOT NULL DEFAULT current_timestamp()
 ) ;
-
---
--- Dumping data for table `avaliacoes`
---
-
-INSERT INTO `avaliacoes` (`id_avaliacao`, `id_usuario`, `id_jogo`, `nota_geral`, `comentario_geral`, `nota_performance`, `plataforma`, `possui_bug`, `descricao_bug`, `visivel`, `data_avaliacao`) VALUES
-(3, 11, 1, 5, 'Jogo muito bom, não encontrei problemas durante minha experiência.', 5, 'PC', 'nao', NULL, 1, '2026-05-25 17:10:34'),
-(4, 10, 1, 4, 'Gostei bastante do jogo, mas encontrei alguns bugs em certas partes.', 3, 'PC', 'sim', 'Encontrei travamentos ocasionais e um bug visual em uma área do mapa.', 1, '2026-05-25 17:10:34');
 
 -- --------------------------------------------------------
 
@@ -100,8 +93,8 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`id_usuario`, `nome`, `email`, `senha`, `tipo`, `data_cadastro`) VALUES
 (1, 'Administrador', 'admin@admin.com', '$2y$10$GvDfKHhjMOQ6ZoJLncTQLujZJvikkDo5bR0tycEHE35..xI3nY362', 'admin', '2026-05-25 14:16:18'),
 (4, 'Miguel', 'miguel.tenenbaum@acad.ufsm.br', '$2y$10$sFgGo9lN4RQqUvOCepRn6emMbt6f2qF1er6kZeNrfqolMPy6s9Tne', 'admin', '2026-05-25 15:29:25'),
-(10, 'teste1', 'teste1@gmail.com', '$2y$10$DIvwfcDR4KExU9jrVfpbfO5au8mAeWXB23dYsxxllaZqAInhTdWtu', 'usuario', '2026-05-25 16:54:38'),
-(11, 'teste2', 'teste2@gmail.com', '$2y$10$SWPxDOShAABXHcGCvGC3I.4v9yJQnD/M1e3PPpVvSjFYrUQrxGSJm', 'usuario', '2026-05-25 17:07:58');
+(11, 'teste3', 'teste2@gmail.com', '$2y$10$SWPxDOShAABXHcGCvGC3I.4v9yJQnD/M1e3PPpVvSjFYrUQrxGSJm', 'usuario', '2026-05-25 17:07:58'),
+(18, 'teste', 'teste@teste.com', '$2y$10$pEfrXYf/2RIP2OLpyYs0N.Iqm4bRWI6CFsTYFld7khJFIB7iWe8Am', 'usuario', '2026-06-18 16:57:48');
 
 --
 -- Indexes for dumped tables
@@ -142,13 +135,13 @@ ALTER TABLE `avaliacoes`
 -- AUTO_INCREMENT for table `jogos`
 --
 ALTER TABLE `jogos`
-  MODIFY `id_jogo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_jogo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables

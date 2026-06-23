@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Criar Conta - Avalia</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=<?php echo filemtime(__DIR__ . '/assets/css/style.css'); ?>">
 </head>
 <body>
 
@@ -58,10 +58,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <a href="index.php">Avalia</a>
     </div>
 
-    <div class="area-pesquisa"></div>
+    <div class="area-pesquisa">
+        <?php
+        $caminho_base = "";
+        require "includes/barra_pesquisa.php";
+        ?>
+    </div>
 
     <nav class="menu">
-        <a class="botao-menu" href="index.php">Catálogo</a>
+        <!--<a class="botao-menu" href="index.php">Catálogo</a>-->
         <a class="botao-menu botao-destaque" href="login.php">Entrar</a>
     </nav>
 </header>
