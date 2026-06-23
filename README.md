@@ -26,7 +26,7 @@ Sistema web desenvolvido em PHP e MySQL para avaliação de jogos.
 - CSS
 - JavaScript
 
-## Como executar o projeto
+## Como executar o projeto sem Docker
 
 1. Copie a pasta do projeto para:
 
@@ -43,3 +43,7 @@ C:\xampp\htdocs\
 6. Acesse o sistema pelo navegador: http://localhost/avaliaja
 
 7. Para acessar como admin, utilize o email 'admin@admin.com' e a senha 'admin123'
+
+## Como executar o projeto com Docker
+
+Leia o arquivo DEPLOY.md
